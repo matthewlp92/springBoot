@@ -1,4 +1,4 @@
-package com.example.springboot_exercise;
+package com.matthewlp.springboot_exercise;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
