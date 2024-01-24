@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UtenteService {
@@ -27,5 +28,33 @@ public class UtenteService {
     public Utente getUtenteById(long id) {
 
         return utenteRepo.findUtenteById(id);
+    }
+
+    public Utente getUtenteByEmail(String email){
+
+        return utenteRepo.findUtenteByEmail(email);
+    }
+
+    public void deleteUtenteById(long id){
+
+        utenteRepo.deleteById(id);
+    };
+
+    public Utente updateUtenteById(long id , Utente updateUtente) throws Exception {
+
+       Utente utenteEsistente = utenteRepo.findUtenteById(id);
+
+       if(utenteEsistente == null){
+
+           throw new Exception("Utente non trovato");
+
+       }
+
+       utenteEsistente.setUsername(updateUtente.getUsername());
+       utenteEsistente.setPassword(updateUtente.getPassword());
+       utenteEsistente.setEmail(updateUtente.getEmail());
+
+       return utenteRepo.save(utenteEsistente);
+
     }
 }

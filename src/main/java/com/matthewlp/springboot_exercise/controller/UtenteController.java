@@ -2,8 +2,6 @@ package com.matthewlp.springboot_exercise.controller;
 
 import com.matthewlp.springboot_exercise.entity.Utente;
 import com.matthewlp.springboot_exercise.service.UtenteService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +10,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/esercizio/api")
-@Api(tags = "Utente Controller", description = "Operazioni sugli utenti")
+@Slf4j
 public class UtenteController {
+
 
     @Autowired
     private UtenteService utenteService;
@@ -23,10 +22,15 @@ public class UtenteController {
         return utenteService.getListaUtenti();
     }
     @GetMapping("/users/{id}")
-    @ApiOperation(value = "Trova utente per ID", notes = "Fornisce dettagli dell' utente con ID specificato")
     public Utente getUtenteById(@PathVariable("id") long id){
 
         return utenteService.getUtenteById(id);
+    }
+
+    @GetMapping("/users/email/{email}")
+    public Utente getUtenteByEmail(@PathVariable("email") String email){
+
+        return utenteService.getUtenteByEmail(email);
     }
 
     @PostMapping("/users")
@@ -34,5 +38,16 @@ public class UtenteController {
 
         return utenteService.saveUtente(u);
 
+    }
+    @PutMapping("/users/{id}")
+    public Utente updateUtenteById(@PathVariable("id") long id, @RequestBody Utente updateUser) throws Exception {
+
+        return utenteService.updateUtenteById(id,updateUser);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUtenteById(@PathVariable("id") long id){
+        log.info("Utente "+ utenteService.getUtenteById(id).getUsername()+ " è stato eliminato");
+        utenteService.deleteUtenteById(id);
     }
 }
