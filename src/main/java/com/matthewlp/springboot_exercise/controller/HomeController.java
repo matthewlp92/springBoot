@@ -33,7 +33,7 @@ public class HomeController {
     public String nextPage(Model model) {
         try {
 
-            return "redirect:/esercizio/api/users";
+            return "redirect:/swagger-ui.html";
 
         }catch (Exception e){
 

@@ -59,6 +59,28 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>3.1.3</version>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version> <!-- SWAGGER  -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.3</version> <!-- Verifica la versione più recente su Maven Central -->
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version> <!-- O usa l'ultima versione disponibile -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>4.8.93</version> <!-- Aggiorna alla versione più recente -->
+        </dependency>
         <!--<dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
