@@ -65,9 +65,21 @@ public class UtenteController {
             @ApiResponse(responseCode = "404", description = "Utente non trovato", content = @Content),
     })
     @GetMapping("/users/email/{email}")
-    public Utente getUtenteByEmail(@Parameter(description = "email dell'utente da cercare")@PathVariable("email") String email){
+    public ResponseEntity<?> getUtenteByEmail(@Parameter(description = "email dell'utente da cercare")@PathVariable("email") String email){
 
-        return utenteService.getUtenteByEmail(email);
+        log.info("getUtenteByEmail started");
+
+        Utente u = utenteService.getUtenteByEmail(email);
+
+        log.info("getUserByEmail Completed");
+
+        if(u != null){
+
+            return ResponseEntity.status(HttpStatus.OK).body(u);
+        }else{
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{}");
+        }
     }
     @Operation(summary = "Aggiunge un utente")
     @PostMapping("/users")
