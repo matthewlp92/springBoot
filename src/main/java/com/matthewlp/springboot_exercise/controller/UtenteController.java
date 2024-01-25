@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +27,11 @@ public class UtenteController {
 
     @Operation(summary = "Torna la lista degli utenti, se presenti")
     @GetMapping("/users")
-    public List<Utente> getListaUtenti(){
+    public ResponseEntity<?> getListaUtenti(){
 
-        return utenteService.getListaUtenti();
+        List<Utente> listaUtenti = utenteService.getListaUtenti();
+
+        return ResponseEntity.status(HttpStatus.OK).body(listaUtenti);
     }
     @Operation(summary = "Torna un utente in base al suo ID")
     @ApiResponses(value = {
@@ -37,9 +41,21 @@ public class UtenteController {
             @ApiResponse(responseCode = "404", description = "Utente non trovato", content = @Content),
     })
     @GetMapping("/users/{id}")
-    public Utente getUtenteById(@Parameter(description = "id dell'utente da cercare") @PathVariable("id") long id){
+    public ResponseEntity<?> getUtenteById(@Parameter(description = "id dell'utente da cercare") @PathVariable("id") long id){
 
-        return utenteService.getUtenteById(id);
+        log.info("getUtenteById started");
+
+        Utente u = utenteService.getUtenteById(id);
+
+        log.info("getUserById Completed");
+
+        if(u != null){
+
+            return ResponseEntity.status(HttpStatus.OK).body(u);
+        }else{
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{}");
+        }
     }
     @Operation(summary = "Torna un utente in base alla sua email")
     @ApiResponses(value = {

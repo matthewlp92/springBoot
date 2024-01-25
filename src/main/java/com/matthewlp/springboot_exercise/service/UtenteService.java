@@ -30,16 +30,7 @@ public class UtenteService {
 
     public Utente getUtenteById(long id) {
 
-        Utente u = utenteRepo.findUtenteById(id);
-
-        if(u != null){
-
-            return u;
-        }else{
-
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404));
-        }
-
+        return utenteRepo.findUtenteById(id);
 
     }
 
