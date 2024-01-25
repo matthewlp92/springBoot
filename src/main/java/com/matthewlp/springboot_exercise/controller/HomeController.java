@@ -14,7 +14,7 @@ public class HomeController {
         try {
             // Logica del tuo metodo
             // Aggiungi il messaggio di benvenuto al modello
-            model.addAttribute("welcomeMessage", "Benvenuto nella home page!");
+            model.addAttribute("welcomeMessage", "Benvenuto nella home page dell'esercizietto!");
 
             System.out.print("---------------SONO NELLA HOME--------------------");
 
