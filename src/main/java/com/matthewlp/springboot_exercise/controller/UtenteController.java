@@ -22,6 +22,8 @@ public class UtenteController {
 
     @Autowired
     private UtenteService utenteService;
+
+    @Operation(summary = "Torna la lista degli utenti, se presenti")
     @GetMapping("/users")
     public List<Utente> getListaUtenti(){
 
@@ -39,25 +41,33 @@ public class UtenteController {
 
         return utenteService.getUtenteById(id);
     }
-
+    @Operation(summary = "Torna un utente in base alla sua email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Utente trovato", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Utente.class)) }),
+            @ApiResponse(responseCode = "400", description = "mail non valida", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Utente non trovato", content = @Content),
+    })
     @GetMapping("/users/email/{email}")
-    public Utente getUtenteByEmail(@PathVariable("email") String email){
+    public Utente getUtenteByEmail(@Parameter(description = "email dell'utente da cercare")@PathVariable("email") String email){
 
         return utenteService.getUtenteByEmail(email);
     }
-
+    @Operation(summary = "Aggiunge un utente")
     @PostMapping("/users")
     public Utente addUtente(@RequestBody Utente u){
 
         return utenteService.saveUtente(u);
 
     }
+    @Operation(summary = "Aggiorna un utente in base al suo ID")
     @PutMapping("/users/{id}")
     public Utente updateUtenteById(@PathVariable("id") long id, @RequestBody Utente updateUser) throws Exception {
 
         return utenteService.updateUtenteById(id,updateUser);
     }
 
+    @Operation(summary = "Elimina un utente in base al suo ID")
     @DeleteMapping("/users/{id}")
     public void deleteUtenteById(@PathVariable("id") long id){
         log.info("Utente "+ utenteService.getUtenteById(id).getUsername()+ " è stato eliminato");
