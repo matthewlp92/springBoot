@@ -1,6 +1,10 @@
 package com.matthewlp.springboot_exercise.controller;
 
+import com.matthewlp.springboot_exercise.dto.CreateUtenteRequestDTO;
+import com.matthewlp.springboot_exercise.dto.UpdateUtenteRequestDTO;
+import com.matthewlp.springboot_exercise.dto.UtenteDTO;
 import com.matthewlp.springboot_exercise.entity.Utente;
+import com.matthewlp.springboot_exercise.service.UtenteService;
 import com.matthewlp.springboot_exercise.service.UtenteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,7 +33,7 @@ public class UtenteController {
     @GetMapping("/users")
     public ResponseEntity<?> getListaUtenti(){
 
-        List<Utente> listaUtenti = utenteService.getListaUtenti();
+        List<UtenteDTO> listaUtenti = utenteService.getListaUtenti();
 
         return ResponseEntity.status(HttpStatus.OK).body(listaUtenti);
     }
@@ -45,7 +49,7 @@ public class UtenteController {
 
         log.info("getUtenteById started");
 
-        Utente u = utenteService.getUtenteById(id);
+        UtenteDTO u = utenteService.getUtenteById(id);
 
         log.info("getUserById Completed");
 
@@ -69,7 +73,7 @@ public class UtenteController {
 
         log.info("getUtenteByEmail started");
 
-        Utente u = utenteService.getUtenteByEmail(email);
+        UtenteDTO u = utenteService.getUtenteByEmail(email);
 
         log.info("getUserByEmail Completed");
 
@@ -83,22 +87,39 @@ public class UtenteController {
     }
     @Operation(summary = "Aggiunge un utente")
     @PostMapping("/users")
-    public Utente addUtente(@RequestBody Utente u){
+    public ResponseEntity<?> createUtente(@RequestBody CreateUtenteRequestDTO createUtenteRequestDTO){
 
-        return utenteService.saveUtente(u);
+        UtenteDTO utenteDTO = utenteService.crateUtente(createUtenteRequestDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(utenteDTO);
 
     }
     @Operation(summary = "Aggiorna un utente in base al suo ID")
     @PutMapping("/users/{id}")
-    public Utente updateUtenteById(@PathVariable("id") long id, @RequestBody Utente updateUser) throws Exception {
+    public ResponseEntity<?> updateUtenteById(@PathVariable("id") long id, @RequestBody UpdateUtenteRequestDTO updateUtenteRequestDTO){
 
-        return utenteService.updateUtenteById(id,updateUser);
+        UtenteDTO utenteDTO = utenteService.updateUtenteById(id,updateUtenteRequestDTO);
+
+        if (utenteDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(utenteDTO);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{}");
+        }
     }
 
     @Operation(summary = "Elimina un utente in base al suo ID")
     @DeleteMapping("/users/{id}")
-    public void deleteUtenteById(@PathVariable("id") long id){
-        log.info("Utente "+ utenteService.getUtenteById(id).getUsername()+ " è stato eliminato");
-        utenteService.deleteUtenteById(id);
+    public ResponseEntity<?> deleteUtenteById(@PathVariable("id") long id){
+
+        UtenteDTO utenteDTO = utenteService.deleteUtenteById(id);
+
+        if (utenteDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(utenteDTO);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{}");
+        }
+
     }
 }
